@@ -2,10 +2,20 @@ class Model {
   ArrayList<Candidate> ElectionCandidates = new ArrayList<Candidate>();  // data
   ArrayList<Candidate> Visible_candidates = new ArrayList<Candidate>(); 
   ArrayList<Candidate> Highlight_candidates = new ArrayList<Candidate>(); 
-
+  ArrayList<String> months = new ArrayList<String>();
+  
   
   void parseData() {
     String[] lines = loadStrings("./data.csv");
+    
+    // TODO: header
+    String[] headers = split(lines[0], ",");
+    for (int i= 4; i < 13; i++) {
+      months.add(headers[i]);
+    }
+    
+    
+    printArray(months);
     
     for (int i = 1; i < lines.length; i++) {
       String[] data = split(lines[i], ",");
@@ -27,4 +37,27 @@ class Model {
   //  printArray(c.Funds);
   //}
   }
+  ArrayList<Candidate> FilterbyState(String state) {
+    ArrayList<Candidate> result = new ArrayList<Candidate>();
+    for (Candidate c : ElectionCandidates) {
+      //println("state "+ "--" +c.State + "--"+state+"--");
+      if (Objects.equals(c.State, state)) {
+        result.add(c);
+      }
+    }
+    return result;
+  }
+  
+  
+  ArrayList<Candidate>FilterbyParty(String party) {
+    ArrayList<Candidate> result = new ArrayList<Candidate>();
+    for (Candidate c : ElectionCandidates) {
+      if (Objects.equals(c.Party, party)) {
+        result.add(c);
+      }
+    }
+    return result;
+  }
+
+  
 }
