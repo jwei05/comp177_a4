@@ -1,11 +1,13 @@
 import java.util.*;
+Model model = new Model();
+
 void setup () {
-  
-  Model model = new Model();
+  size(1600, 1000);
   model.parseData();
   
-  ArrayList<Candidate> result = new ArrayList<Candidate>();
-  result = model.FilterbyParty("Democrat");
+  
+  //ArrayList<Candidate> result = new ArrayList<Candidate>();
+  //result = model.FilterbyParty("Democrat");
   //println("size: ", result.size());
   
   //for (Candidate c : result ) {
@@ -18,4 +20,7 @@ void setup () {
 }
 
 void draw () {
+   Line_Graph temporal_g = new Line_Graph(model.ElectionCandidates, 
+                                    model.months, 0, 0, 0.6 * width, 0.5 * height);
+                                    
 }

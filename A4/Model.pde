@@ -7,15 +7,14 @@ class Model {
   
   void parseData() {
     String[] lines = loadStrings("./data.csv");
-    
-    // TODO: header
+   
     String[] headers = split(lines[0], ",");
     for (int i= 4; i < 13; i++) {
       months.add(headers[i]);
     }
     
     
-    printArray(months);
+    //printArray(months);
     
     for (int i = 1; i < lines.length; i++) {
       String[] data = split(lines[i], ",");
