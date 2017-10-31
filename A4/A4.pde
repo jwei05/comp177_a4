@@ -20,7 +20,9 @@ void setup () {
 }
 
 void draw () {
+   
    Line_Graph temporal_g = new Line_Graph(model.ElectionCandidates, 
                                     model.months, 0, 0, 0.6 * width, 0.5 * height);
+   Sunburst sunburst_g = new Sunburst(0, 0.5 * height, 0.6 * width, 0.5 * height);
                                     
 }
