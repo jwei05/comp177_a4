@@ -57,15 +57,6 @@ class Sunburst{
     ellipse(center_x, center_y, inner_r*2, inner_r*2);
   }
   
-  float getFundSum(ArrayList<Candidate>candidates) {
-    float temp_sum = 0;
-    for (Candidate c : candidates) {
-      float curr_val = c.Funds.get(c.Funds.size() - 1);
-      temp_sum += curr_val;
-    }
-    return temp_sum;
-  }
-  
   void createStateMap(ArrayList<Candidate>candidates) {
     for (Candidate c : candidates) {
       if (state_map.get(c.State) == null) {
@@ -79,7 +70,13 @@ class Sunburst{
       }
     }
   }
-  
-  
- 
+}
+
+float getFundSum(ArrayList<Candidate>candidates) {
+    float temp_sum = 0;
+    for (Candidate c : candidates) {
+      float curr_val = c.Funds.get(c.Funds.size() - 1);
+      temp_sum += curr_val;
+    }
+    return temp_sum;
 }
