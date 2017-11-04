@@ -76,10 +76,6 @@ class Alluvial {
     ellipse(canvas_x + x_margin, y_margin + Dem_dia + y_margin/2 + Rep_dia/2, Rep_dia, Rep_dia);
     ellipse(canvas_x + x_margin, canvas_h - y_margin - Other_dia/2, Other_dia, Other_dia);
     
-    
-    
-    
-    
     // draw the streams
     
   }

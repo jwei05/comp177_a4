@@ -2,6 +2,7 @@ class Candidate {
   String Name;
   String State;
   String Party;
+  Float TotalFund;
   ArrayList<String> Months;
   ArrayList<Float> Funds;
   
@@ -10,5 +11,6 @@ class Candidate {
     State = state;
     Party = party;
     Funds = funds;
+    TotalFund = Funds.get(Funds.size()-1);
   }
 }

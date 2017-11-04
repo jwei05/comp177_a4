@@ -4,17 +4,13 @@ class Model {
   ArrayList<Candidate> Highlight_candidates = new ArrayList<Candidate>(); 
   ArrayList<String> months = new ArrayList<String>();
   
-  
+  //read in data
   void parseData() {
     String[] lines = loadStrings("./data.csv");
-   
     String[] headers = split(lines[0], ",");
     for (int i= 4; i < 13; i++) {
       months.add(headers[i]);
     }
-    
-    
-    //printArray(months);
     
     for (int i = 1; i < lines.length; i++) {
       String[] data = split(lines[i], ",");
@@ -22,11 +18,14 @@ class Model {
       String state =  data[1];
       String party = data[2];
       ArrayList<Float> funds = new ArrayList<Float>();
+    
       for (int j = 4; j < 13; j++) {
         funds.add(float(data[j]));
       }
+      
       Candidate c = new Candidate(name, state, party, funds);
       ElectionCandidates.add(c);
+    
     }
   
   //for (Candidate c : ElectionCandidates ) {
