@@ -52,7 +52,8 @@ class Alluvial {
     
     for (int i  = 0; i < candidates.size(); i++){
       curr_r = ratios.get(i) * first_d / 2;
-      Circle c = new Circle(candidates.get(i).Name, canvas_x + canvas_w - x_margin, accum_y + y_margin + curr_r, curr_r*2);
+      Circle c = new Circle(candidates.get(i).Name, canvas_x + canvas_w - x_margin, 
+                            accum_y + y_margin + curr_r, curr_r*2, candidates.get(i).TotalFund);
       
       candidates_circles.add(c);
       
@@ -74,32 +75,21 @@ class Alluvial {
     y_margin = spacing_total/3;
     content_total = 2*canvas_h/3;
     
-<<<<<<< HEAD
-    float Dem_dia = content_total / (1 + Rep_to_Dem + Other_to_Dem);
-    float Rep_dia = Dem_dia * Rep_to_Dem;
-    float Other_dia = Dem_dia * Other_to_Dem;
-    x_margin = max(Dem_dia, max(Rep_dia, Other_dia));
-    
-    ellipse(canvas_x + x_margin, y_margin + Dem_dia/2, Dem_dia, Dem_dia );
-    ellipse(canvas_x + x_margin, y_margin + Dem_dia + y_margin/2 + Rep_dia/2, Rep_dia, Rep_dia);
-    ellipse(canvas_x + x_margin, canvas_h - y_margin - Other_dia/2, Other_dia, Other_dia);
-    
-    // draw the streams
-=======
     float Dem_dia = content_total / 3;
     float Rep_dia = content_total / 3;
     float Other_dia = content_total / 3;
     x_margin = content_total / 4.5;
     
-    Circle demo = new Circle("Democrat", canvas_x + x_margin, y_margin + Dem_dia/2, Dem_dia);
-    Circle rep = new Circle("Republican", canvas_x + x_margin, y_margin + Dem_dia + y_margin/2 + Rep_dia/2, Rep_dia);
-    Circle other = new Circle("Other", canvas_x + x_margin, canvas_h - y_margin - Other_dia/2, Other_dia);
+    Circle demo = new Circle("Democrat", canvas_x + x_margin, y_margin + Dem_dia/2, Dem_dia, 0);
+    Circle rep = new Circle("Republican", canvas_x + x_margin,
+                            y_margin + Dem_dia + y_margin/2 + Rep_dia/2, Rep_dia, 0);
+    Circle other = new Circle("Other", canvas_x + x_margin, 
+                            canvas_h - y_margin - Other_dia/2, Other_dia, 0);
     
     party_circles.add(demo);
     party_circles.add(rep);
     party_circles.add(other);
-   
-    
+    float minfund = 
     //draw the streams
     for (Circle c : party_circles) {
       float party_x = c.x;
@@ -110,13 +100,14 @@ class Alluvial {
         float candi_x = circle.x;
         float candi_y = circle.y;
         noFill();
-        
+        //calculate stroke weight, dependent on amount of fund
+        float stroke = circle.Funding/minfund;
         bezier(party_x, party_y, candi_x-150, party_y, party_x+150, candi_y, candi_x, candi_y);
       }
     }
-    
-    // draw the party
+           // draw the party
     for (Circle c : party_circles) {
+      fill(255);
       c.drawCircle();
     }
     
@@ -124,7 +115,7 @@ class Alluvial {
     for (Circle c : candidates_circles) {
       c.drawCircle();
     }
->>>>>>> 38186753a88c0dd605db5684b2e7c3f162a91bb5
+    //draw relation
     
   }
   

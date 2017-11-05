@@ -56,8 +56,8 @@ class Model {
       }
     }
     return result;
-  }
-
+  }  
+}
   float find_min_fund() {
     float min = Float.MAX_VALUE;
     for (Candidate c : ElectionCandidates) {
@@ -67,6 +67,3 @@ class Model {
     }
     return min;
   }
-
-  
-}
