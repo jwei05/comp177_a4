@@ -17,11 +17,10 @@ class Alluvial {
     canvas_h = c_h;
     
     createPartyMap(candidates);
-    drawAlluvial(candidates);
   }
   
   
-  void drawAlluvial(ArrayList<Candidate>candidates){
+  void drawGraph(ArrayList<Candidate>candidates){
     
     // initialize the candidates' circles
     float ratio_sum = 0;
@@ -32,9 +31,11 @@ class Alluvial {
     for (int i = 0; i < candidates.size(); i++) {
       Candidate curr = candidates.get(i);
       Candidate first = candidates.get(0);
+      
       float curr_fund = curr.TotalFund;
       float first_fund = first.TotalFund;
       float ratio = sqrt(curr_fund / first_fund);
+      
       ratio_sum += ratio;
       ratios.add(ratio);
     }
@@ -89,8 +90,7 @@ class Alluvial {
     party_circles.add(demo);
     party_circles.add(rep);
     party_circles.add(other);
-    float minfund = model.min_fund;
-    
+
     //draw the streams
     for (Circle c : party_circles) {
       float party_x = c.x;
@@ -102,15 +102,16 @@ class Alluvial {
         float candi_y = circle.y;
         noFill();
         //calculate stroke weight, dependent on amount of fund
-        float stroke = 0.05*circle.Funding/minfund;
+        float stroke = (circle.Funding/model.minfund)/60;
         strokeWeight(stroke);
         bezier(party_x, party_y, candi_x-150, party_y, party_x+150, candi_y, candi_x, candi_y);
       }
-    }
-     
-     // draw the party
-    for (Circle c : party_circles) {
+      //resets stroke weight
       strokeWeight(1);
+    }
+
+    // draw the party
+    for (Circle c : party_circles) {
       fill(255);
       c.drawCircle();
     }
@@ -119,8 +120,6 @@ class Alluvial {
     for (Circle c : candidates_circles) {
       c.drawCircle();
     }
-    //draw relation
-    
   }
   
   void createPartyMap(ArrayList<Candidate>candidates){

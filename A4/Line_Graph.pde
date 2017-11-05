@@ -11,7 +11,7 @@ class Line_Graph {
   float max; //maximum fund
   
   public Line_Graph(ArrayList<Candidate>candidates, ArrayList<String>fund_months,
-             float c_x, float c_y, float c_w, float c_h) {
+                        float c_x, float c_y, float c_w, float c_h) {
      canvas_x = c_x;
      canvas_y = c_y;
      canvas_width = c_w;
@@ -22,6 +22,11 @@ class Line_Graph {
      y_len = canvas_height - (2 * y_margin);
      
      max = getMaxfund(candidates);
+     
+     //drawaxisandidates,fund_months);
+     //drawData(candid 
+  }
+  void drawGraph(ArrayList<Candidate> candidates, ArrayList<String>fund_months) {
      drawaxis(candidates,fund_months);
      drawData(candidates);
   }

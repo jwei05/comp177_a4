@@ -3,13 +3,23 @@ class Model {
   ArrayList<Candidate> Visible_candidates = new ArrayList<Candidate>(); 
   ArrayList<Candidate> Highlight_candidates = new ArrayList<Candidate>(); 
   ArrayList<String> months = new ArrayList<String>();
-  float min_fund;
   
-  Model () {
-    parseData();
-    min_fund = find_min_fund();
+  float minfund;
+  
+  Model() {
+     parseData();
+     minfund = find_min_fund();
   }
   
+  float find_min_fund() {
+    float min = Float.MAX_VALUE;
+    for (Candidate c : ElectionCandidates) {
+      if (c.TotalFund < min) {
+         min = c.TotalFund;
+      }
+    }
+    return min;
+  }
   //read in data
   void parseData() {
     String[] lines = loadStrings("./data.csv");
@@ -31,7 +41,6 @@ class Model {
       
       Candidate c = new Candidate(name, state, party, funds);
       ElectionCandidates.add(c);
-    
     }
   
   //for (Candidate c : ElectionCandidates ) {
@@ -52,7 +61,6 @@ class Model {
     return result;
   }
   
-  
   ArrayList<Candidate>FilterbyParty(String party) {
     ArrayList<Candidate> result = new ArrayList<Candidate>();
     for (Candidate c : ElectionCandidates) {
@@ -61,16 +69,5 @@ class Model {
       }
     }
     return result;
-  }
-  
-  float find_min_fund() {
-    float min = Float.MAX_VALUE;
-    for (Candidate c : ElectionCandidates) {
-      if (c.TotalFund < min) {
-         min = c.TotalFund;
-      }
-    }
-    return min;
-  }
+  }  
 }
-  

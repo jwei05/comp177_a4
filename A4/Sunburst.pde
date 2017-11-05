@@ -23,9 +23,11 @@ class Sunburst{
     middle_r = outer_r - 50;
     inner_r = middle_r - 50;
     all_candidates_sum = getFundSum(candidates);
-    createStateMap(candidates);
-    drawSunburst(candidates);
-    
+    createStateMap(candidates);    
+  }
+  
+  void drawGraph(ArrayList<Candidate>candidates){
+       drawSunburst(candidates); 
   }
   
   void drawSunburst(ArrayList<Candidate>candidates){

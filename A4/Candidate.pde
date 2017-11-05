@@ -10,7 +10,9 @@ class Candidate {
     Name = name;
     State = state;
     Party = party;
+    //funds overtime
     Funds = funds;
+    //total fund by end of campaign
     TotalFund = Funds.get(Funds.size()-1);
   }
 }

@@ -1,3 +1,4 @@
+//class for circle profile for alluvial graph
 class Circle {
   String name;
   float x, y;
