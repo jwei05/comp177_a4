@@ -1,16 +1,37 @@
 class Model {
   ArrayList<Candidate> ElectionCandidates = new ArrayList<Candidate>();  // data
-  ArrayList<Candidate> Visible_candidates = new ArrayList<Candidate>(); 
+  ArrayList<Candidate> Visible_candidates;//= new ArrayList<Candidate>(); 
   ArrayList<Candidate> Highlight_candidates = new ArrayList<Candidate>(); 
   ArrayList<String> months = new ArrayList<String>();
   
   float minfund;
   
+ 
   Model() {
      parseData();
+     Visible_candidates = (ArrayList<Candidate>)ElectionCandidates.clone();
      minfund = find_min_fund();
   }
   
+  //updates the interactions between the three graphs
+  void Update(String filtergroup, String filtername ) {
+    if (filtergroup == "state") {
+      ArrayList<Candidate> l = FilterbyState(filtername);
+      for( Candidate c : l ){
+         c.highlight = true; 
+      }
+    } else if (filtergroup == "party"){
+      ArrayList<Candidate> l = FilterbyParty(filtername);
+      for( Candidate c : l ){
+         c.highlight = true; 
+      }
+    }//filter by candidate 
+    else {
+      for(Candidate c : Visible_candidates){
+         c.highlight = true; 
+      }
+    }
+  }
   float find_min_fund() {
     float min = Float.MAX_VALUE;
     for (Candidate c : ElectionCandidates) {
@@ -52,7 +73,7 @@ class Model {
   }
   ArrayList<Candidate> FilterbyState(String state) {
     ArrayList<Candidate> result = new ArrayList<Candidate>();
-    for (Candidate c : ElectionCandidates) {
+    for (Candidate c : Visible_candidates) {
       //println("state "+ "--" +c.State + "--"+state+"--");
       if (Objects.equals(c.State, state)) {
         result.add(c);
@@ -63,7 +84,7 @@ class Model {
   
   ArrayList<Candidate>FilterbyParty(String party) {
     ArrayList<Candidate> result = new ArrayList<Candidate>();
-    for (Candidate c : ElectionCandidates) {
+    for (Candidate c : Visible_candidates) {
       if (Objects.equals(c.Party, party)) {
         result.add(c);
       }

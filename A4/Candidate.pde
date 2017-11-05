@@ -5,6 +5,7 @@ class Candidate {
   Float TotalFund;
   ArrayList<String> Months;
   ArrayList<Float> Funds;
+  boolean highlight = false;
   
   Candidate (String name, String state, String party, ArrayList<Float> funds) {
     Name = name;

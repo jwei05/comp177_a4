@@ -4,6 +4,7 @@ class Circle {
   float x, y;
   float diameter;
   float Funding;
+  boolean highlight; // not on yourself
   
   public Circle(String Name, float X, float Y, float D, float fund){
      name = Name;

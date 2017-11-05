@@ -30,5 +30,6 @@ void draw () {
   temporal_g.drawGraph(model.ElectionCandidates, model.months);
   sunburst_g.drawGraph(model.ElectionCandidates);
   alluvial_g.drawGraph(model.ElectionCandidates);
+  
                                     
 }

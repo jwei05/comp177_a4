@@ -12,6 +12,9 @@ class Sunburst{
   float all_candidates_sum;
   Map<String, ArrayList<Candidate>> state_map = new HashMap<String, ArrayList<Candidate>>();
   
+  Map<String, ArrayList<Arc>> candidates_arcs_map = new HashMap<String, ArrayList<Arc>>();
+  ArrayList<Arc> state_arcs = new ArrayList<Arc>();
+  
   public Sunburst(ArrayList<Candidate>candidates, float c_x, float c_y, float c_w, float c_h){
     canvas_x = c_x;
     canvas_y = c_y;
@@ -24,13 +27,33 @@ class Sunburst{
     inner_r = middle_r - 50;
     all_candidates_sum = getFundSum(candidates);
     createStateMap(candidates);    
+    initSunburst(candidates); 
   }
   
   void drawGraph(ArrayList<Candidate>candidates){
-       drawSunburst(candidates); 
+       // candidates arcs
+       for (String key : candidates_arcs_map.keySet()) {
+         ArrayList<Arc>l = candidates_arcs_map.get(key);
+         for (Arc a : l) {
+           a.drawArc();
+         }
+       }
+       
+       // state arcs
+       for (Arc a : state_arcs) {
+         a.drawArc();
+       }
+       
+       // inner
+      ellipse(center_x, center_y, inner_r*2, inner_r*2);
   }
   
-  void drawSunburst(ArrayList<Candidate>candidates){
+  void initSunburst(ArrayList<Candidate>candidates){
+    // initialize the candidates arcs under parties
+    for ( String key : state_map.keySet()) {
+      candidates_arcs_map.put(key, new ArrayList());
+    }
+    
     // outer arcs
     float start_angle = 0;
     for ( String key : state_map.keySet()) {
@@ -38,9 +61,10 @@ class Sunburst{
         for (Candidate c : l) {
           float curr_val = c.Funds.get(c.Funds.size() - 1);
           float curr_angle = 2*PI*(curr_val/all_candidates_sum);
-          ellipseMode(CENTER);
-          fill(255);
-          arc(center_x, center_y, outer_r*2, outer_r*2, start_angle, start_angle + curr_angle, PIE); 
+    
+          Arc arc = new Arc(c.Name, 255, center_x, center_y, start_angle, start_angle + curr_angle, outer_r*2, middle_r*2, curr_angle, false);
+          candidates_arcs_map.get(key).add(arc);
+          
           start_angle += curr_angle;
         }
     }
@@ -50,13 +74,12 @@ class Sunburst{
     for ( String key : state_map.keySet()) {
       float state_sum = getFundSum(state_map.get(key));
       float curr_angle = 2*PI*(state_sum/all_candidates_sum);
-      fill(255);
-      arc(center_x, center_y, middle_r*2, middle_r*2, start_angle, start_angle + curr_angle, PIE); 
+  
+      Arc arc = new Arc(key, 255, center_x, center_y, start_angle, start_angle + curr_angle, middle_r*2, inner_r*2, curr_angle, true);
+      state_arcs.add(arc);
+      
       start_angle += curr_angle;
-    }
-    
-    // inner
-    ellipse(center_x, center_y, inner_r*2, inner_r*2);
+    } 
   }
   
   void createStateMap(ArrayList<Candidate>candidates) {
