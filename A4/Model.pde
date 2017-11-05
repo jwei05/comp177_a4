@@ -5,6 +5,11 @@ class Model {
   ArrayList<String> months = new ArrayList<String>();
   float min_fund;
   
+  Model () {
+    parseData();
+    min_fund = find_min_fund();
+  }
+  
   //read in data
   void parseData() {
     String[] lines = loadStrings("./data.csv");
@@ -56,8 +61,8 @@ class Model {
       }
     }
     return result;
-  }  
-}
+  }
+  
   float find_min_fund() {
     float min = Float.MAX_VALUE;
     for (Candidate c : ElectionCandidates) {
@@ -67,3 +72,5 @@ class Model {
     }
     return min;
   }
+}
+  

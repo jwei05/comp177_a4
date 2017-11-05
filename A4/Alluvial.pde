@@ -89,7 +89,8 @@ class Alluvial {
     party_circles.add(demo);
     party_circles.add(rep);
     party_circles.add(other);
-    float minfund = 
+    float minfund = model.min_fund;
+    
     //draw the streams
     for (Circle c : party_circles) {
       float party_x = c.x;
@@ -101,12 +102,15 @@ class Alluvial {
         float candi_y = circle.y;
         noFill();
         //calculate stroke weight, dependent on amount of fund
-        float stroke = circle.Funding/minfund;
+        float stroke = 0.05*circle.Funding/minfund;
+        strokeWeight(stroke);
         bezier(party_x, party_y, candi_x-150, party_y, party_x+150, candi_y, candi_x, candi_y);
       }
     }
-           // draw the party
+     
+     // draw the party
     for (Circle c : party_circles) {
+      strokeWeight(1);
       fill(255);
       c.drawCircle();
     }

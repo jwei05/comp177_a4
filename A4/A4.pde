@@ -1,9 +1,9 @@
 import java.util.*;
-Model model = new Model();
+Model model;
 
 void setup () {
   size(1200, 700);
-  model.parseData();
+  model = new Model();
   
   
   //ArrayList<Candidate> result = new ArrayList<Candidate>();
