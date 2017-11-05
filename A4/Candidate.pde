@@ -6,6 +6,7 @@ class Candidate {
   ArrayList<String> Months;
   ArrayList<Float> Funds;
   
+  
   Candidate (String name, String state, String party, ArrayList<Float> funds) {
     Name = name;
     State = state;

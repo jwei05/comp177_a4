@@ -3,25 +3,27 @@ class Alluvial {
   float canvas_y;
   float canvas_w;
   float canvas_h;
-  
-  float candidate_d;
-  Map<String, ArrayList<Candidate>> party_map = new HashMap<String, ArrayList<Candidate>>();
  
+  ArrayList<Circle>party_circles = new ArrayList<Circle>();
+  ArrayList<Circle>candidates_circles = new ArrayList<Circle>();
+
+  Map<String, ArrayList<Candidate>> party_map = new HashMap<String, ArrayList<Candidate>>();
+  Map<String, ArrayList<Circle>>party_pos_map = new HashMap<String, ArrayList<Circle>>();
+  
   public Alluvial(ArrayList<Candidate>candidates, float c_x, float c_y, float c_w, float c_h){
     canvas_x = c_x;
     canvas_y = c_y;
     canvas_w = c_w;
     canvas_h = c_h;
-    candidate_d = canvas_h / (2*candidates.size() + 1);
     
     createPartyMap(candidates);
     drawAlluvial(candidates);
-    
   }
   
   
   void drawAlluvial(ArrayList<Candidate>candidates){
-    // draw the candidates' circles
+    
+    // initialize the candidates' circles
     float ratio_sum = 0;
     float spacing_total = canvas_h/5;
     float content_total = 4*canvas_h/5;
@@ -30,32 +32,37 @@ class Alluvial {
     for (int i = 0; i < candidates.size(); i++) {
       Candidate curr = candidates.get(i);
       Candidate first = candidates.get(0);
-      float curr_fund = curr.Funds.get(curr.Funds.size() - 1);
-      float first_fund = first.Funds.get(first.Funds.size() - 1);
+      float curr_fund = curr.TotalFund;
+      float first_fund = first.TotalFund;
       float ratio = sqrt(curr_fund / first_fund);
       ratio_sum += ratio;
       ratios.add(ratio);
-      //float x_pos = canvas_x + canvas_w - 3*candidate_d;
-      //float y_pos = 2*candidate_d * (i+1) - 0.5*candidate_d;
-      //ellipse(x_pos, y_pos, candidate_d, candidate_d);
     }
-    
     
     float first_d = content_total / ratio_sum;
     float max_ratio = find_max(ratios);
     float x_margin = max_ratio * first_d / 2 + 10;
-    
     float y_margin = spacing_total / (candidates.size() +1 );
     float curr_r = 0;
     float accum_y = 0;
+    
+    party_pos_map.put("Democrat", new ArrayList());
+    party_pos_map.put("Republican", new ArrayList());
+    party_pos_map.put("Other", new ArrayList());
+    
     for (int i  = 0; i < candidates.size(); i++){
       curr_r = ratios.get(i) * first_d / 2;
-      ellipse(canvas_x + canvas_w - x_margin, accum_y + y_margin + curr_r, curr_r*2, curr_r * 2);
+      Circle c = new Circle(candidates.get(i).Name, canvas_x + canvas_w - x_margin, accum_y + y_margin + curr_r, curr_r*2);
+      
+      candidates_circles.add(c);
+      
+      party_pos_map.get(candidates.get(i).Party).add(c);
+      
       accum_y += y_margin + curr_r + curr_r; 
     }
 
     
-    // draw the party circles
+    // initialize the party circles
     float democrat_sum = getFundSum(party_map.get("Democrat"));
     float rep_sum = getFundSum(party_map.get("Republican"));
     float other_sum = getFundSum(party_map.get("Other"));
@@ -67,6 +74,7 @@ class Alluvial {
     y_margin = spacing_total/3;
     content_total = 2*canvas_h/3;
     
+<<<<<<< HEAD
     float Dem_dia = content_total / (1 + Rep_to_Dem + Other_to_Dem);
     float Rep_dia = Dem_dia * Rep_to_Dem;
     float Other_dia = Dem_dia * Other_to_Dem;
@@ -77,6 +85,46 @@ class Alluvial {
     ellipse(canvas_x + x_margin, canvas_h - y_margin - Other_dia/2, Other_dia, Other_dia);
     
     // draw the streams
+=======
+    float Dem_dia = content_total / 3;
+    float Rep_dia = content_total / 3;
+    float Other_dia = content_total / 3;
+    x_margin = content_total / 4.5;
+    
+    Circle demo = new Circle("Democrat", canvas_x + x_margin, y_margin + Dem_dia/2, Dem_dia);
+    Circle rep = new Circle("Republican", canvas_x + x_margin, y_margin + Dem_dia + y_margin/2 + Rep_dia/2, Rep_dia);
+    Circle other = new Circle("Other", canvas_x + x_margin, canvas_h - y_margin - Other_dia/2, Other_dia);
+    
+    party_circles.add(demo);
+    party_circles.add(rep);
+    party_circles.add(other);
+   
+    
+    //draw the streams
+    for (Circle c : party_circles) {
+      float party_x = c.x;
+      float party_y = c.y;
+      String p = c.name;
+      ArrayList<Circle> l = party_pos_map.get(p);
+      for (Circle circle : l) {
+        float candi_x = circle.x;
+        float candi_y = circle.y;
+        noFill();
+        
+        bezier(party_x, party_y, candi_x-150, party_y, party_x+150, candi_y, candi_x, candi_y);
+      }
+    }
+    
+    // draw the party
+    for (Circle c : party_circles) {
+      c.drawCircle();
+    }
+    
+    // draw the candidates
+    for (Circle c : candidates_circles) {
+      c.drawCircle();
+    }
+>>>>>>> 38186753a88c0dd605db5684b2e7c3f162a91bb5
     
   }
   
@@ -98,13 +146,6 @@ class Alluvial {
     //    printArray(l);
     //}
   }
-  
-  
-  //ArrayList<Float> FundList(ArrayList<Candidate>candidates) {
-    
-  //}
-  
-  
 }
 
 float find_max(ArrayList<Float>l) {
