@@ -96,6 +96,14 @@ class Model {
     return result;
   }
   
+  void updateVisible(String name, boolean is_state){
+    //if state, then two layers
+    if(is_state){
+        Visible_candidates = FilterbyState(name);
+    }
+    
+  }
+  
   ArrayList<Candidate>FilterbyParty(String party) {
     ArrayList<Candidate> result = new ArrayList<Candidate>();
     for (Candidate c : Visible_candidates) {

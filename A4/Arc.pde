@@ -43,14 +43,24 @@ class Arc{
     if (sq(mouseX - cent_x) + sq(mouseY - cent_y) <= sq(inner_d/2)) {
       return false;
     }
-   
+    
    if (sq(mouseX - cent_x) + sq(mouseY - cent_y) <= sq(diameter/2) && (start < curr_angle && end > curr_angle)) {
-      return true;
+       return true;
     } else {
       return false; 
       }
   }
   
+  void mouseClicked(){
+    float curr_angle = atan2(mouseY - cent_y, mouseX - cent_x);
+    if (curr_angle < 0) {
+      curr_angle += TWO_PI;
+    }
+    if (sq(mouseX - cent_x) + sq(mouseY - cent_y) <= sq(diameter/2) && (start < curr_angle && end > curr_angle)){
+       println("ha"); 
+      model.updateVisible(name, is_state); 
+    }
+  }
   void updateModel() {
     if (is_state) {
        model.Update("state", name);
