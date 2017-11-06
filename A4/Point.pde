@@ -1,22 +1,25 @@
 class Point{
   float x, y;
-  float diameter = 5;
+  float diameter = 7;
   float fund;
   boolean highlight;
+  String name;
   
-  public Point(float x_pos, float y_pos, float Fund){
+  public Point(float x_pos, float y_pos, float Fund, String Name){
      x = x_pos;
      y = y_pos;
      fund = Fund;
      highlight = false;
+     name = Name;
   }
   
   void drawPoint() {
     if (onPoint() || highlight) {
-      //println("onlhihg: ");
-      
       fill(255, 255, 102);
       ellipse(x, y, diameter, diameter);
+      if (onPoint()) {
+         updateModel();
+       }
     } else {
       fill(0);
       ellipse(x, y, diameter, diameter);
@@ -28,5 +31,10 @@ class Point{
        return true; 
     }
     return false;
+  }
+  
+  
+  void updateModel() {
+    model.Update("candidate", name);
   }
 }

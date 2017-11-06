@@ -109,7 +109,6 @@ class Sunburst{
     for( Candidate c : candidates ){
        if(c.highlight){
          ArrayList<Arc> l = cand_arcs_map.get(c);
-         println("size: ", l.size());
          for (Arc a : l) {
            a.highlight = true;
          }

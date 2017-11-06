@@ -6,6 +6,7 @@ Alluvial alluvial_g;
 
 void setup () {
   size(1200, 700);
+  background(255);
   model = new Model();
   
   temporal_g = new Line_Graph(model.ElectionCandidates, 
@@ -27,9 +28,10 @@ void setup () {
 
 void draw () {
   // TODO: the ordering :(
+  temporal_g.drawGraph(model.Visible_candidates, model.months);
   alluvial_g.drawGraph(model.Visible_candidates);
   sunburst_g.drawGraph(model.Visible_candidates);
-  temporal_g.drawGraph(model.Visible_candidates, model.months);
+ 
   
   model.reset();
 }

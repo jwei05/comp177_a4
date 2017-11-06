@@ -71,7 +71,6 @@ class Line_Graph {
     
     void initData(ArrayList<Candidate> candidates, ArrayList<String>fund_months){ 
       float curr_x, curr_y;
-      float prev_x, prev_y;
       float y_unit_len = (y_len - 25) / max;
       
       total_mth = fund_months.size();
@@ -82,7 +81,7 @@ class Line_Graph {
          for(int i = 0; i < c.Funds.size(); i++){           
             curr_x = x_margin + (i+1) * x_unit_len;
             curr_y = (c.Funds.get(i)) * y_unit_len ; 
-            Point p = new Point(curr_x, canvas_height - y_margin - curr_y, c.Funds.get(i));
+            Point p = new Point(curr_x, canvas_height - y_margin - curr_y, c.Funds.get(i), c.Name);
             cand_fund.add(p);
          }
          cand_points.put(c, cand_fund);
@@ -92,17 +91,26 @@ class Line_Graph {
     void drawData(ArrayList<Candidate>candidates){
       updatePoints(candidates);
       for(Candidate key : cand_points.keySet()){
-         ArrayList<Point> c_fundings = cand_points.get(key);
+         ArrayList<Point> l_pts = cand_points.get(key);
          color c = color(0);
-         if (c_fundings.get(0).highlight) {
+         
+         if (l_pts.get(0).highlight) {
                c = color(255, 255, 102); 
          } 
          
-         for(int i = 0; i < c_fundings.size(); i++){
-            Point p = c_fundings.get(i); 
+         
+         for (Point p : l_pts) {
+           if (p.onPoint()) {
+               c = color(255, 255, 102); 
+           }
+         } 
+         
+         // draw lines
+         for(int i = 0; i < l_pts.size(); i++){
+            Point p = l_pts.get(i); 
             if(i != 0) {
-               float prev_x = c_fundings.get(i-1).x;
-               float prev_y = c_fundings.get(i-1).y;
+               float prev_x = l_pts.get(i-1).x;
+               float prev_y = l_pts.get(i-1).y;
                stroke(c);
                line(prev_x, prev_y, p.x, p.y);
                stroke(0);
