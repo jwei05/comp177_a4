@@ -17,9 +17,6 @@ class Point{
     if (onPoint() || highlight) {
       fill(255, 255, 102);
       ellipse(x, y, diameter, diameter);
-      if (onPoint()) {
-         updateModel();
-       }
     } else {
       fill(0);
       ellipse(x, y, diameter, diameter);

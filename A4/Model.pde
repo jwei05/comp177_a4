@@ -24,7 +24,8 @@ class Model {
         c.highlight = false; 
      }
      alluvial_g.reset();
-     sunburst_g.reset();
+     sunburst_g.reset_1();
+     sunburst_g.reset_2();
      temporal_g.reset();
   }
   

@@ -28,9 +28,9 @@ class Arc{
     if (onArc() || highlight) {
       fill(131, 198, 205);
       arc(cent_x, cent_y, diameter, diameter, start, end, PIE); 
-      if (onArc()) {
-        updateModel();
-      }
+      //if (onArc()) {
+      //  updateModelHighlight();
+      //}
     }
   }
   
@@ -43,7 +43,7 @@ class Arc{
     if (sq(mouseX - cent_x) + sq(mouseY - cent_y) <= sq(inner_d/2)) {
       return false;
     }
-    
+   
    if (sq(mouseX - cent_x) + sq(mouseY - cent_y) <= sq(diameter/2) && (start < curr_angle && end > curr_angle)) {
        if (clicked){
          model.updateVisible(name, is_state);
@@ -55,7 +55,7 @@ class Arc{
       }
   }
   
-  void updateModel() {
+  void updateModelHighlight() {
     if (is_state) {
        model.Update("state", name);
     }
@@ -64,6 +64,8 @@ class Arc{
     }
   }
 }
+
+
 void mouseClicked(){
     clicked = true;
 }

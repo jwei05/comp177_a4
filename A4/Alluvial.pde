@@ -93,6 +93,19 @@ class Alluvial {
     party_circles.add(other);
    }
    
+   
+  void report_hover_to_model() {
+    for (Circle c: party_circles) {
+      String p = c.name;
+      ArrayList<Circle> l = party_pos_map.get(p);
+      for (Circle circle : l) {
+        if (circle.onCircle()) {
+          circle.updateModel();
+        }
+      }
+    }
+  }
+  
   void drawGraph(ArrayList<Candidate>candidates){
     //draw the streams
     update_circle(candidates);
@@ -165,6 +178,8 @@ class Alluvial {
        c.highlight = false; 
     }
   }
+  
+
  }
 
 float find_max(ArrayList<Float>l) {

@@ -88,6 +88,18 @@ class Line_Graph {
       }
     }
     
+    void report_hover_to_model() {
+      for(Candidate key : cand_points.keySet()){
+         ArrayList<Point> l_pts = cand_points.get(key);
+         for (Point p : l_pts) {
+           if (p.onPoint()) {
+               p.updateModel();
+           }
+         } 
+      }
+    }
+    
+    
     void drawData(ArrayList<Candidate>candidates){
       updatePoints(candidates);
       for(Candidate key : cand_points.keySet()){
