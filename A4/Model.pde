@@ -20,7 +20,7 @@ class Model {
      }
      alluvial_g.reset();
      sunburst_g.reset();
-     //temporal_g.reset();
+     temporal_g.reset();
   }
   
   //updates the interactions between the three graphs

@@ -9,6 +9,7 @@ class Line_Graph {
   float canvas_height;
   float x_unit_len;
   float max; //maximum fund
+  int total_mth;
   
   Map<Candidate, ArrayList<Point>> cand_points = new HashMap<Candidate, ArrayList<Point>>();
   
@@ -24,25 +25,23 @@ class Line_Graph {
      y_len = canvas_height - (2 * y_margin);
      
      max = getMaxfund(candidates);
-     initData(candidates);
+     initData(candidates, fund_months);
      //drawaxisandidates,fund_months);
      //drawData(candid 
   }
   void drawGraph(ArrayList<Candidate> candidates, ArrayList<String>fund_months) {
-     drawaxis(candidates,fund_months);
-     drawData();
+     drawaxis(fund_months);
+     drawData(candidates);
   }
   
-  void drawaxis(ArrayList<Candidate>candidates, ArrayList<String>fund_months){
+  void drawaxis(ArrayList<String>fund_months){
     //draws the x axis
     line(x_margin, y_margin + y_len, x_margin + x_len, y_margin + y_len);
     //draws the y axis
     line(x_margin, y_margin, x_margin, y_margin + y_len);
 
     //draw the x axis increments
-    int total_mth = fund_months.size();
-    for(int i = 0; i < total_mth; i++) {
-      x_unit_len = x_len/(total_mth + 1);      
+    for(int i = 0; i < total_mth; i++) {      
       float curr_x = x_margin + (i+1) * x_unit_len;
       float curr_y = canvas_height - y_margin;
       line(curr_x, curr_y - 2, curr_x, curr_y + 2);
@@ -70,10 +69,13 @@ class Line_Graph {
        return temp_max;
     }
     
-    void initData(ArrayList<Candidate> candidates){ 
+    void initData(ArrayList<Candidate> candidates, ArrayList<String>fund_months){ 
       float curr_x, curr_y;
       float prev_x, prev_y;
       float y_unit_len = (y_len - 25) / max;
+      
+      total_mth = fund_months.size();
+      x_unit_len = x_len/(total_mth + 1);
       
       for (Candidate c : candidates){
          ArrayList<Point> cand_fund = new ArrayList<Point>();
@@ -87,18 +89,47 @@ class Line_Graph {
       }
     }
     
-    void drawData(){
+    void drawData(ArrayList<Candidate>candidates){
+      updatePoints(candidates);
       for(Candidate key : cand_points.keySet()){
          ArrayList<Point> c_fundings = cand_points.get(key);
+         color c = color(0);
+         if (c_fundings.get(0).highlight) {
+               println("ha");
+               c = color(255, 255, 102); 
+         } 
+         
          for(int i = 0; i < c_fundings.size(); i++){
-            fill(0);
             Point p = c_fundings.get(i); 
-            p.drawPoint();
             if(i != 0) {
                float prev_x = c_fundings.get(i-1).x;
                float prev_y = c_fundings.get(i-1).y;
+               stroke(c);
                line(prev_x, prev_y, p.x, p.y);
-            }     
+               stroke(0);
+            }  
+            p.drawPoint();
+         }
+      }
+    }
+   
+    void updatePoints(ArrayList<Candidate>candidates){
+        for(Candidate c : candidates){
+           if(c.highlight){
+              ArrayList<Point> l =  cand_points.get(c); 
+              for(Point p : l){
+                 p.highlight = true;
+              }
+           }
+        }
+    }
+    
+    void reset(){
+        for(Candidate key : cand_points.keySet()){
+         ArrayList<Point> c_fundings = cand_points.get(key);
+         
+         for(int i = 0; i < c_fundings.size(); i++){
+            c_fundings.get(i).highlight = false;
          }
       }
     }

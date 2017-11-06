@@ -26,10 +26,8 @@ void setup () {
 }
 
 void draw () {
-  temporal_g.drawGraph(model.Visible_candidates, model.months);
   sunburst_g.drawGraph(model.Visible_candidates);
+  temporal_g.drawGraph(model.Visible_candidates, model.months);
   alluvial_g.drawGraph(model.Visible_candidates);
   model.reset();
-  
-                                    
 }
