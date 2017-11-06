@@ -32,7 +32,9 @@ class Sunburst{
   }
   
   void drawGraph(ArrayList<Candidate>candidates){
+       updateState_Arc_Map(candidates);
        updateArcs(candidates);
+      
        // candidates arcs
        for (String key : state_arcs_map.keySet()) {
          ArrayList<Arc>l = state_arcs_map.get(key);
@@ -114,6 +116,92 @@ class Sunburst{
          }
        }
     }
+  }
+  
+  //update the mapping between state and arc
+  void updateState_Arc_Map(ArrayList<Candidate>candidates) {
+      state_arcs_map.clear();
+      cand_arcs_map.clear();
+      ArrayList<String> states = getStates(candidates);
+      ArrayList<Arc> updated_arcs = new ArrayList<Arc>();
+      for ( String st : states) {
+          state_arcs_map.put(st, new ArrayList());
+      }
+    
+      // initialize the candidate arcs
+      for (Candidate c : candidates) {
+          cand_arcs_map.put(c, new ArrayList());
+      }
+      //visible candidates only one, only draw circle
+      if(states.size() == 1 && candidates.size() == 1){
+          Arc a = new Arc(candidates.get(0).Name, 255, center_x, center_y, 0, 2*PI, outer_r *2, 0, 2*PI, false);
+          updated_arcs.add(a);
+          cand_arcs_map.put(candidates.get(0), updated_arcs); 
+      } else if (states.size() == 1){
+          twolayer(candidates);
+      }
+
+      //// outer arcs
+      //float start_angle = 0;
+      //for ( String key : state_map.keySet()) {
+      //  ArrayList<Candidate>l = state_map.get(key);
+      //  for (Candidate c : l) {
+      //    float curr_val = c.Funds.get(c.Funds.size() - 1);
+      //    float curr_angle = 2*PI*(curr_val/all_candidates_sum);
+    
+      //    Arc arc = new Arc(c.Name, 255, center_x, center_y, start_angle, start_angle + curr_angle, outer_r*2, middle_r*2, curr_angle, false);
+      //    state_arcs_map.get(key).add(arc);
+      //    cand_arcs_map.get(c).add(arc);
+          
+      //    start_angle += curr_angle;
+      //  }
+      //}
+    
+      //// middle arcs
+      //start_angle = 0;
+      //for ( String key : state_map.keySet()) {
+      //  float state_sum = getFundSum(state_map.get(key));
+      //  float curr_angle = 2*PI*(state_sum/all_candidates_sum);
+  
+      //  Arc arc = new Arc(key, 255, center_x, center_y, start_angle, start_angle + curr_angle, middle_r*2, inner_r*2, curr_angle, true);
+      //  state_arcs.add(arc);
+      
+      //  start_angle += curr_angle;
+      //} 
+      
+      ////for(String st : states){
+      //   ArrayList<Arc> c = cand_arcs_map.get(st); 
+      //   state_arcs_map.put(st, c);
+      //}
+      //if (states.size() == 1){
+      //  //recalculate the arc angles 
+        
+      //}
+      
+      
+      
+  }
+  
+  //recalculates the arcs based off of two layer sunburst
+  void twolayer(ArrayList<Candidate>candidates){
+      for (Candidate c : candidates) {
+         float start = 
+         float end = 
+         Arc a = new Arc(c.Name, 255, center_x, center_y,   
+      }
+  }
+  
+  ArrayList<String> getStates(ArrayList<Candidate>candidates){
+    ArrayList<String> allstates = new ArrayList<String>();
+    Set<String> uniquestates;
+    for (Candidate c : candidates){
+        allstates.add(c.State);
+    }
+    uniquestates = new HashSet<String>(allstates);
+    allstates.clear();
+    allstates.addAll(uniquestates);
+    printArray(allstates);
+    return allstates;
   }
   
   //resets all the highlighting

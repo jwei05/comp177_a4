@@ -3,6 +3,7 @@ Model model;
 Line_Graph temporal_g;
 Sunburst sunburst_g;
 Alluvial alluvial_g;
+boolean clicked;
 
 void setup () {
   size(1200, 700);
@@ -28,9 +29,9 @@ void setup () {
 
 void draw () {
   // TODO: the ordering :(
+  sunburst_g.drawGraph(model.Visible_candidates);
   temporal_g.drawGraph(model.Visible_candidates, model.months);
   alluvial_g.drawGraph(model.Visible_candidates);
-  sunburst_g.drawGraph(model.Visible_candidates);
  
   
   model.reset();

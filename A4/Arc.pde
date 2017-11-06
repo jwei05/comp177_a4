@@ -45,22 +45,16 @@ class Arc{
     }
     
    if (sq(mouseX - cent_x) + sq(mouseY - cent_y) <= sq(diameter/2) && (start < curr_angle && end > curr_angle)) {
+       if (clicked){
+         model.updateVisible(name, is_state);
+         clicked = false;
+       }
        return true;
     } else {
       return false; 
       }
   }
-  //TODO: doesn't work
-  //void mouseClicked(){
-  //  float curr_angle = atan2(mouseY - cent_y, mouseX - cent_x);
-  //  if (curr_angle < 0) {
-  //    curr_angle += TWO_PI;
-  //  }
-  //  if (sq(mouseX - cent_x) + sq(mouseY - cent_y) <= sq(diameter/2) && (start < curr_angle && end > curr_angle)){
-  //     println("ha"); 
-  //    model.updateVisible(name, is_state); 
-  //  }
-  //}
+  
   void updateModel() {
     if (is_state) {
        model.Update("state", name);
@@ -69,4 +63,17 @@ class Arc{
        model.Update("candidate", name);
     }
   }
+}
+void mouseClicked(){
+  //float cent_y, float cent_x, float diameter, float start, float end, String name, boolean is_state){
+    //println("--");
+    //float curr_angle = atan2(mouseY - cent_y, mouseX - cent_x);
+    //if (curr_angle < 0) {
+    //  curr_angle += TWO_PI;
+    //}
+    //if (sq(mouseX - cent_x) + sq(mouseY - cent_y) <= sq(diameter/2) && (start < curr_angle && end > curr_angle)){
+    //   println("ha"); 
+    //  model.updateVisible(name, is_state); 
+    //}
+    clicked = true;
 }

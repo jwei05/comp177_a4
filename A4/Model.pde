@@ -100,7 +100,7 @@ class Model {
     //if state, then two layers
     if(is_state){
         Visible_candidates = FilterbyState(name);
-    }
+    } 
     
   }
   
