@@ -10,6 +10,8 @@ class Line_Graph {
   float x_unit_len;
   float max; //maximum fund
   
+  Map<Candidate, ArrayList<Point>> cand_points = new HashMap<Candidate, ArrayList<Point>>();
+  
   public Line_Graph(ArrayList<Candidate>candidates, ArrayList<String>fund_months,
                         float c_x, float c_y, float c_w, float c_h) {
      canvas_x = c_x;
@@ -22,13 +24,13 @@ class Line_Graph {
      y_len = canvas_height - (2 * y_margin);
      
      max = getMaxfund(candidates);
-     
+     initData(candidates);
      //drawaxisandidates,fund_months);
      //drawData(candid 
   }
   void drawGraph(ArrayList<Candidate> candidates, ArrayList<String>fund_months) {
      drawaxis(candidates,fund_months);
-     drawData(candidates);
+     drawData();
   }
   
   void drawaxis(ArrayList<Candidate>candidates, ArrayList<String>fund_months){
@@ -67,22 +69,36 @@ class Line_Graph {
        }
        return temp_max;
     }
-    void drawData(ArrayList<Candidate> candidates){ 
+    
+    void initData(ArrayList<Candidate> candidates){ 
       float curr_x, curr_y;
       float prev_x, prev_y;
       float y_unit_len = (y_len - 25) / max;
+      
       for (Candidate c : candidates){
+         ArrayList<Point> cand_fund = new ArrayList<Point>();
          for(int i = 0; i < c.Funds.size(); i++){           
             curr_x = x_margin + (i+1) * x_unit_len;
             curr_y = (c.Funds.get(i)) * y_unit_len ; 
+            Point p = new Point(curr_x, canvas_height - y_margin - curr_y, c.Funds.get(i));
+            cand_fund.add(p);
+         }
+         cand_points.put(c, cand_fund);
+      }
+    }
+    
+    void drawData(){
+      for(Candidate key : cand_points.keySet()){
+         ArrayList<Point> c_fundings = cand_points.get(key);
+         for(int i = 0; i < c_fundings.size(); i++){
             fill(0);
-            ellipse(curr_x, canvas_height - y_margin - curr_y, 5, 5);
+            Point p = c_fundings.get(i); 
+            p.drawPoint();
             if(i != 0) {
-               prev_x = x_margin + i * x_unit_len;
-               prev_y = (c.Funds.get(i-1)) * y_unit_len;
-               line(prev_x, (canvas_height - y_margin) - prev_y, curr_x, 
-                                         (canvas_height - y_margin) - curr_y); 
-            }
+               float prev_x = c_fundings.get(i-1).x;
+               float prev_y = c_fundings.get(i-1).y;
+               line(prev_x, prev_y, p.x, p.y);
+            }     
          }
       }
     }

@@ -53,10 +53,10 @@ class Arc{
   
   void updateModel() {
     if (is_state) {
-      
+       model.Update("state", name);
     }
     else {
-      
+       model.Update("candidate", name);
     }
   }
 }

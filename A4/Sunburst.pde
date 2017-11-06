@@ -95,6 +95,20 @@ class Sunburst{
       }
     }
   }
+  
+  //resets all the highlighting
+  void reset(){
+    for (Arc a : state_arcs){
+       a.highlight = false; 
+    }
+    
+    for(String key : candidates_arcs_map.keySet()){
+       ArrayList<Arc> all_arcs = candidates_arcs_map.get(key);
+       for(Arc c : all_arcs){
+         c.highlight = false; 
+       }  
+    }
+  }
 }
 
 float getFundSum(ArrayList<Candidate>candidates) {

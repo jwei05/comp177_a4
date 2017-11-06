@@ -13,12 +13,22 @@ class Model {
      minfund = find_min_fund();
   }
   
+  //resets the highlighting
+  void reset(){
+     for(Candidate c : Visible_candidates){
+        c.highlight = false; 
+     }
+     alluvial_g.reset();
+     sunburst_g.reset();
+     //temporal_g.reset();
+  }
+  
   //updates the interactions between the three graphs
   void Update(String filtergroup, String filtername ) {
     if (filtergroup == "state") {
       ArrayList<Candidate> l = FilterbyState(filtername);
       for( Candidate c : l ){
-         c.highlight = true; 
+          c.highlight = true; 
       }
     } else if (filtergroup == "party"){
       ArrayList<Candidate> l = FilterbyParty(filtername);
@@ -28,10 +38,14 @@ class Model {
     }//filter by candidate 
     else {
       for(Candidate c : Visible_candidates){
-         c.highlight = true; 
+         if(c.Name == filtername) {
+            c.highlight = true; 
+         }
       }
     }
+
   }
+  
   float find_min_fund() {
     float min = Float.MAX_VALUE;
     for (Candidate c : ElectionCandidates) {

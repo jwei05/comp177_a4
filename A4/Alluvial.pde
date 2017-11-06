@@ -6,7 +6,8 @@ class Alluvial {
  
   ArrayList<Circle>party_circles = new ArrayList<Circle>();
   ArrayList<Circle>candidates_circles = new ArrayList<Circle>();
-
+  
+  Map<Candidate, Circle> cc_map = new HashMap<Candidate, Circle>();
   Map<String, ArrayList<Candidate>> party_map = new HashMap<String, ArrayList<Candidate>>();
   Map<String, ArrayList<Circle>>party_pos_map = new HashMap<String, ArrayList<Circle>>();
   
@@ -17,10 +18,10 @@ class Alluvial {
     canvas_h = c_h;
     
     createPartyMap(candidates);
+    initGraph(candidates);
   }
   
-  
-  void drawGraph(ArrayList<Candidate>candidates){
+  void initGraph(ArrayList<Candidate>candidates){
     
     // initialize the candidates' circles
     float ratio_sum = 0;
@@ -54,10 +55,10 @@ class Alluvial {
     for (int i  = 0; i < candidates.size(); i++){
       curr_r = ratios.get(i) * first_d / 2;
       Circle c = new Circle(candidates.get(i).Name, canvas_x + canvas_w - x_margin, 
-                            accum_y + y_margin + curr_r, curr_r*2, candidates.get(i).TotalFund);
+                            accum_y + y_margin + curr_r, curr_r*2, candidates.get(i).TotalFund, false);
       
       candidates_circles.add(c);
-      
+      cc_map.put(candidates.get(i), c);
       party_pos_map.get(candidates.get(i).Party).add(c);
       
       accum_y += y_margin + curr_r + curr_r; 
@@ -81,17 +82,20 @@ class Alluvial {
     float Other_dia = content_total / 3;
     x_margin = content_total / 4.5;
     
-    Circle demo = new Circle("Democrat", canvas_x + x_margin, y_margin + Dem_dia/2, Dem_dia, 0);
+    Circle demo = new Circle("Democrat", canvas_x + x_margin, y_margin + Dem_dia/2, Dem_dia, 0, true);
     Circle rep = new Circle("Republican", canvas_x + x_margin,
-                            y_margin + Dem_dia + y_margin/2 + Rep_dia/2, Rep_dia, 0);
+                            y_margin + Dem_dia + y_margin/2 + Rep_dia/2, Rep_dia, 0, true);
     Circle other = new Circle("Other", canvas_x + x_margin, 
-                            canvas_h - y_margin - Other_dia/2, Other_dia, 0);
+                            canvas_h - y_margin - Other_dia/2, Other_dia, 0, true);
     
     party_circles.add(demo);
     party_circles.add(rep);
     party_circles.add(other);
-
+   }
+   
+  void drawGraph(ArrayList<Candidate>candidates){
     //draw the streams
+    update_circle(candidates);
     for (Circle c : party_circles) {
       float party_x = c.x;
       float party_y = c.y;
@@ -102,7 +106,7 @@ class Alluvial {
         float candi_y = circle.y;
         noFill();
         //calculate stroke weight, dependent on amount of fund
-        float stroke = (circle.Funding/model.minfund)/60;
+        float stroke = (circle.Funding/model.minfund)/20;
         strokeWeight(stroke);
         bezier(party_x, party_y, candi_x-150, party_y, party_x+150, candi_y, candi_x, candi_y);
       }
@@ -120,6 +124,7 @@ class Alluvial {
     for (Circle c : candidates_circles) {
       c.drawCircle();
     }
+ 
   }
   
   void createPartyMap(ArrayList<Candidate>candidates){
@@ -140,7 +145,27 @@ class Alluvial {
     //    printArray(l);
     //}
   }
-}
+  
+  void update_circle(ArrayList<Candidate>candidates){
+    for( Candidate c : candidates ){
+       if(c.highlight){
+         //println(c.Name);
+         cc_map.get(c).highlight = true;
+       }
+    }
+  }
+  
+  //resets all the highlightin in party and candidate circles
+  void reset(){
+    for(Circle c : party_circles) {
+       c.highlight = false; 
+    }
+    
+    for(Circle c : candidates_circles) {
+       c.highlight = false; 
+    }
+  }
+ }
 
 float find_max(ArrayList<Float>l) {
   float m = 0;

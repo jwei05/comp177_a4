@@ -12,7 +12,6 @@ void setup () {
                                     model.months, 0, 0, 0.6 * width, 0.5 * height);
   sunburst_g = new Sunburst(model.ElectionCandidates, 0, 0.5 * height, 0.6 * width, 0.5 * height);
   alluvial_g = new Alluvial(model.ElectionCandidates,0.6 *width, 0, 0.4*width, height);
-  
   //ArrayList<Candidate> result = new ArrayList<Candidate>();
   //result = model.FilterbyParty("Democrat");
   //println("size: ", result.size());
@@ -27,9 +26,10 @@ void setup () {
 }
 
 void draw () {
-  temporal_g.drawGraph(model.ElectionCandidates, model.months);
-  sunburst_g.drawGraph(model.ElectionCandidates);
-  alluvial_g.drawGraph(model.ElectionCandidates);
+  temporal_g.drawGraph(model.Visible_candidates, model.months);
+  sunburst_g.drawGraph(model.Visible_candidates);
+  alluvial_g.drawGraph(model.Visible_candidates);
+  model.reset();
   
                                     
 }
