@@ -26,8 +26,10 @@ void setup () {
 }
 
 void draw () {
+  // TODO: the ordering :(
+  alluvial_g.drawGraph(model.Visible_candidates);
   sunburst_g.drawGraph(model.Visible_candidates);
   temporal_g.drawGraph(model.Visible_candidates, model.months);
-  alluvial_g.drawGraph(model.Visible_candidates);
+  
   model.reset();
 }

@@ -95,7 +95,6 @@ class Line_Graph {
          ArrayList<Point> c_fundings = cand_points.get(key);
          color c = color(0);
          if (c_fundings.get(0).highlight) {
-               println("ha");
                c = color(255, 255, 102); 
          } 
          

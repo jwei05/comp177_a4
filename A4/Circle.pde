@@ -17,13 +17,34 @@ class Circle {
   }
   
   void drawCircle() {
-    if (highlight) {
+    if (onCircle() || highlight) {
        fill(242, 202, 205);
        //println(this.name);
        ellipse(x, y, diameter, diameter); 
+       if (onCircle()) {
+         updateModel();
+       }
     } else {
       fill(255);
       ellipse(x, y, diameter, diameter); 
+    }
+  }
+  
+  
+  boolean onCircle(){
+    if(sq(mouseX - x) + sq(mouseY - y) <= sq(diameter/2)){
+       return true; 
+    }
+    return false;
+  }
+  
+  
+  void updateModel() {
+    if (is_party) {
+       model.Update("party", name);
+    }
+    else {
+       model.Update("candidate", name);
     }
   }
   

@@ -12,8 +12,9 @@ class Sunburst{
   float all_candidates_sum;
   Map<String, ArrayList<Candidate>> state_map = new HashMap<String, ArrayList<Candidate>>();
   
-  Map<String, ArrayList<Arc>> candidates_arcs_map = new HashMap<String, ArrayList<Arc>>();
+  Map<String, ArrayList<Arc>> state_arcs_map = new HashMap<String, ArrayList<Arc>>();
   ArrayList<Arc> state_arcs = new ArrayList<Arc>();
+  Map<Candidate, ArrayList<Arc>> cand_arcs_map = new HashMap<Candidate, ArrayList<Arc>>();
   
   public Sunburst(ArrayList<Candidate>candidates, float c_x, float c_y, float c_w, float c_h){
     canvas_x = c_x;
@@ -31,9 +32,10 @@ class Sunburst{
   }
   
   void drawGraph(ArrayList<Candidate>candidates){
+       updateArcs(candidates);
        // candidates arcs
-       for (String key : candidates_arcs_map.keySet()) {
-         ArrayList<Arc>l = candidates_arcs_map.get(key);
+       for (String key : state_arcs_map.keySet()) {
+         ArrayList<Arc>l = state_arcs_map.get(key);
          for (Arc a : l) {
            a.drawArc();
          }
@@ -49,10 +51,16 @@ class Sunburst{
   }
   
   void initSunburst(ArrayList<Candidate>candidates){
-    // initialize the candidates arcs under parties
+    // initialize the state arcs
     for ( String key : state_map.keySet()) {
-      candidates_arcs_map.put(key, new ArrayList());
+      state_arcs_map.put(key, new ArrayList());
     }
+    
+    // initialize the candidate arcs
+    for (Candidate c : candidates) {
+      cand_arcs_map.put(c, new ArrayList());
+    }
+    
     
     // outer arcs
     float start_angle = 0;
@@ -63,7 +71,8 @@ class Sunburst{
           float curr_angle = 2*PI*(curr_val/all_candidates_sum);
     
           Arc arc = new Arc(c.Name, 255, center_x, center_y, start_angle, start_angle + curr_angle, outer_r*2, middle_r*2, curr_angle, false);
-          candidates_arcs_map.get(key).add(arc);
+          state_arcs_map.get(key).add(arc);
+          cand_arcs_map.get(c).add(arc);
           
           start_angle += curr_angle;
         }
@@ -96,14 +105,26 @@ class Sunburst{
     }
   }
   
+  void updateArcs(ArrayList<Candidate>candidates) {
+    for( Candidate c : candidates ){
+       if(c.highlight){
+         ArrayList<Arc> l = cand_arcs_map.get(c);
+         println("size: ", l.size());
+         for (Arc a : l) {
+           a.highlight = true;
+         }
+       }
+    }
+  }
+  
   //resets all the highlighting
   void reset(){
     for (Arc a : state_arcs){
        a.highlight = false; 
     }
     
-    for(String key : candidates_arcs_map.keySet()){
-       ArrayList<Arc> all_arcs = candidates_arcs_map.get(key);
+    for(String key : state_arcs_map.keySet()){
+       ArrayList<Arc> all_arcs = state_arcs_map.get(key);
        for(Arc c : all_arcs){
          c.highlight = false; 
        }  
