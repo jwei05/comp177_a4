@@ -6,11 +6,16 @@ class Model {
   
   float minfund;
   
- 
+  float all_candidates_sum;
+  Map<String, ArrayList<Candidate>> state_map = new HashMap<String, ArrayList<Candidate>>();
+  
+  
   Model() {
      parseData();
      Visible_candidates = (ArrayList<Candidate>)ElectionCandidates.clone();
      minfund = find_min_fund();
+     createStateMap(ElectionCandidates);  
+     all_candidates_sum = getFundSum(ElectionCandidates);
   }
   
   //resets the highlighting
@@ -85,6 +90,22 @@ class Model {
   //  printArray(c.Funds);
   //}
   }
+  
+  
+  void createStateMap(ArrayList<Candidate>candidates) {
+    for (Candidate c : candidates) {
+      if (state_map.get(c.State) == null) {
+        ArrayList<Candidate>l = new ArrayList<Candidate>();
+        l.add(c);
+        state_map.put(c.State, l);
+      } else {
+        ArrayList<Candidate>l = state_map.get(c.State);
+        l.add(c);
+        state_map.put(c.State, l);
+      }
+    }
+  }
+  
   ArrayList<Candidate> FilterbyState(String state) {
     ArrayList<Candidate> result = new ArrayList<Candidate>();
     for (Candidate c : Visible_candidates) {
@@ -101,7 +122,6 @@ class Model {
     if(is_state){
         Visible_candidates = FilterbyState(name);
     } 
-    
   }
   
   ArrayList<Candidate>FilterbyParty(String party) {

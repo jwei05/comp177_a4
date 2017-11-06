@@ -65,15 +65,5 @@ class Arc{
   }
 }
 void mouseClicked(){
-  //float cent_y, float cent_x, float diameter, float start, float end, String name, boolean is_state){
-    //println("--");
-    //float curr_angle = atan2(mouseY - cent_y, mouseX - cent_x);
-    //if (curr_angle < 0) {
-    //  curr_angle += TWO_PI;
-    //}
-    //if (sq(mouseX - cent_x) + sq(mouseY - cent_y) <= sq(diameter/2) && (start < curr_angle && end > curr_angle)){
-    //   println("ha"); 
-    //  model.updateVisible(name, is_state); 
-    //}
     clicked = true;
 }

@@ -28,11 +28,11 @@ void setup () {
 }
 
 void draw () {
-  // TODO: the ordering :(
+  // TODO: two passes, first one report to model all the onPoint(), onArc(), onCircle; second one actually draws
+  
   sunburst_g.drawGraph(model.Visible_candidates);
   temporal_g.drawGraph(model.Visible_candidates, model.months);
   alluvial_g.drawGraph(model.Visible_candidates);
  
-  
   model.reset();
 }
