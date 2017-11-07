@@ -11,7 +11,7 @@ class Line_Graph {
   float max; //maximum fund
   int total_mth;
   
-  Map<Candidate, ArrayList<Point>> cand_points = new HashMap<Candidate, ArrayList<Point>>();
+  Map<String, ArrayList<Point>> cand_points = new HashMap<String, ArrayList<Point>>();
   
   public Line_Graph(ArrayList<Candidate>candidates, ArrayList<String>fund_months,
                         float c_x, float c_y, float c_w, float c_h) {
@@ -84,33 +84,85 @@ class Line_Graph {
             Point p = new Point(curr_x, canvas_height - y_margin - curr_y, c.Funds.get(i), c.Name);
             cand_fund.add(p);
          }
-         cand_points.put(c, cand_fund);
+         cand_points.put(c.Name, cand_fund);
       }
     }
     
     void report_hover_to_model() {
-      for(Candidate key : cand_points.keySet()){
-         ArrayList<Point> l_pts = cand_points.get(key);
-         for (Point p : l_pts) {
-           if (p.onPoint()) {
-               p.updateModel();
-           }
-         } 
+      if (to_draw == "all") {
+        for(String key : cand_points.keySet()){
+           ArrayList<Point> l_pts = cand_points.get(key);
+           for (Point p : l_pts) {
+             if (p.onPoint()) {
+                 p.updateModel();
+             }
+           } 
+        }
+      } else if (cand_points.containsKey(to_draw)) {
+        // candidate
+        ArrayList<Point> l_pts = cand_points.get(to_draw);
+        for (Point p : l_pts) {
+          if (p.onPoint()) {
+            p.updateModel();
+          }
+        }
+      } else {
+        // state
+        ArrayList<Candidate> cands = model.FilterbyState(to_draw);
+        for(String key : cand_points.keySet()){
+           if (cands.contains(key)) {
+             ArrayList<Point> l_pts = cand_points.get(key);
+             for (Point p : l_pts) {
+               if (p.onPoint()) {
+                   p.updateModel();
+               }
+             }
+           }  
+        }
       }
+      
     }
     
     
     void drawData(ArrayList<Candidate>candidates){
       updatePoints(candidates);
-      for(Candidate key : cand_points.keySet()){
-         ArrayList<Point> l_pts = cand_points.get(key);
-         color c = color(0);
-         
-         if (l_pts.get(0).highlight) {
+      
+      if (to_draw == "all") {
+        for(String key : cand_points.keySet()){
+           ArrayList<Point> l_pts = cand_points.get(key);
+           color c = color(0);
+           
+           if (l_pts.get(0).highlight) {
+                 c = color(255, 255, 102); 
+           } 
+           
+           for (Point p : l_pts) {
+             if (p.onPoint()) {
+                 c = color(255, 255, 102); 
+             }
+           } 
+           
+           // draw lines
+           for(int i = 0; i < l_pts.size(); i++){
+              Point p = l_pts.get(i); 
+              if(i != 0) {
+                 float prev_x = l_pts.get(i-1).x;
+                 float prev_y = l_pts.get(i-1).y;
+                 stroke(c);
+                 line(prev_x, prev_y, p.x, p.y);
+                 stroke(0);
+              }  
+              p.drawPoint();
+           }
+        }
+      } else if (cand_points.containsKey(to_draw)) {
+        ArrayList<Point> l_pts = cand_points.get(to_draw);
+        color c = color(0);
+        if (l_pts.get(0).highlight) {
                c = color(255, 255, 102); 
          } 
          
-         for (Point p : l_pts) {
+        for (Point p : l_pts) {
            if (p.onPoint()) {
                c = color(255, 255, 102); 
            }
@@ -128,13 +180,50 @@ class Line_Graph {
             }  
             p.drawPoint();
          }
+      } else {
+        // state
+        ArrayList<Candidate> cands = model.FilterbyState(to_draw);
+        ArrayList<String>names = new ArrayList<String>();
+        for (Candidate c : cands) {
+          names.add(c.Name);
+        }
+        
+        for(String key : cand_points.keySet()){
+           if (names.contains(key)) {
+             ArrayList<Point> l_pts = cand_points.get(key);
+             color c = color(0);
+             
+             if (l_pts.get(0).highlight) {
+                   c = color(255, 255, 102); 
+             } 
+             
+             for (Point p : l_pts) {
+               if (p.onPoint()) {
+                   c = color(255, 255, 102); 
+               }
+             } 
+             
+             // draw lines
+             for(int i = 0; i < l_pts.size(); i++){
+                Point p = l_pts.get(i); 
+                if(i != 0) {
+                   float prev_x = l_pts.get(i-1).x;
+                   float prev_y = l_pts.get(i-1).y;
+                   stroke(c);
+                   line(prev_x, prev_y, p.x, p.y);
+                   stroke(0);
+                }  
+                p.drawPoint();
+             }
+           }
+        }
       }
     }
    
     void updatePoints(ArrayList<Candidate>candidates){
         for(Candidate c : candidates){
            if(c.highlight){
-              ArrayList<Point> l =  cand_points.get(c); 
+              ArrayList<Point> l =  cand_points.get(c.Name); 
               for(Point p : l){
                  p.highlight = true;
               }
@@ -143,7 +232,7 @@ class Line_Graph {
     }
     
     void reset(){
-        for(Candidate key : cand_points.keySet()){
+        for(String key : cand_points.keySet()){
          ArrayList<Point> c_fundings = cand_points.get(key);
          
          for(int i = 0; i < c_fundings.size(); i++){

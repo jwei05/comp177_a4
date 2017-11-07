@@ -8,7 +8,7 @@ String to_draw;
 
 void setup () {
   size(1200, 700);
-  background(92, 95, 112);
+  background(92, 95, 255);
   model = new Model();
   to_draw = "all";
 
@@ -20,6 +20,8 @@ void setup () {
 }
 
 void draw () {
+  clear();
+  background(92, 95, 255);
   temporal_g.report_hover_to_model();
   alluvial_g.report_hover_to_model();
   sunburst_g.report_hover_to_model(to_draw);
