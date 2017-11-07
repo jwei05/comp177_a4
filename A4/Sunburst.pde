@@ -16,7 +16,7 @@ class Sunburst{
   
   // the state one (2 layers)
   Map<String, ArrayList<Arc>> state_arcs_map_2 = new HashMap<String, ArrayList<Arc>>();
-  ArrayList<Arc> state_arcs_2 = new ArrayList<Arc>();   // all 2Pie s
+  //ArrayList<Arc> state_arcs_2 = new ArrayList<Arc>();   // all 2Pie s
   Map<Candidate, ArrayList<Arc>> cand_arcs_map_2 = new HashMap<Candidate, ArrayList<Arc>>();
   
   
@@ -90,62 +90,78 @@ class Sunburst{
           float curr_val = c.Funds.get(c.Funds.size() - 1);
           float state_sum = getFundSum(model.state_map.get(key));
           float curr_angle = 2*PI*(curr_val/state_sum);
-          Arc arc = new Arc(c.Name, 255, center_x, center_y, start_angle, start_angle + curr_angle, middle_r*2, inner_r*2, curr_angle, false);
+          Arc arc = new Arc(c.Name, 255, center_x, center_y, start_angle, start_angle + curr_angle, outer_r*2, middle_r*2, curr_angle, false);
           state_arcs_map_2.get(key).add(arc);
           cand_arcs_map_2.get(c).add(arc);
           start_angle += curr_angle;
         }
+        start_angle = 0;
     }
   }
   
-  void report_hover_to_model() {
-    // candidates arcs
-     for (String key : state_arcs_map_1.keySet()) {
-       ArrayList<Arc>l = state_arcs_map_1.get(key);
+  void report_hover_to_model(String to_draw) {   
+    if (to_draw == "all") {
+      // candidates arcs
+       for (String key : state_arcs_map_1.keySet()) {
+         ArrayList<Arc>l = state_arcs_map_1.get(key);
+         for (Arc a : l) {
+           if (a.onArc()) {
+             a.updateModelHighlight();
+           }
+         }
+       }
+       // state arcs
+       for (Arc a : state_arcs_1) {
+         if (a.onArc()) {
+           a.updateModelHighlight();
+         }
+       }
+    } else if (state_arcs_map_1.containsKey(to_draw)){
+      // candidates arcs
+       ArrayList<Arc>l = state_arcs_map_2.get(to_draw);
        for (Arc a : l) {
          if (a.onArc()) {
            a.updateModelHighlight();
          }
        }
-     }
-     
-     // state arcs
-     for (Arc a : state_arcs_1) {
-       if (a.onArc()) {
-         a.updateModelHighlight();
-       }
-     }
+    } else {
+      // TODO: the candidate
+      
+    }
+    
   }
   
   void drawGraph(ArrayList<Candidate>candidates){
-    
        // Draw the complete graph (3 layers)
-       //updateState_Arc_Map(candidates);
-       updateArcsHighlight_1(candidates);
-       // candidates arcs
-       for (String key : state_arcs_map_1.keySet()) {
-         ArrayList<Arc>l = state_arcs_map_1.get(key);
-         for (Arc a : l) {
+       if (to_draw == "all") {
+         updateArcsHighlight_1(candidates);
+         // candidates arcs
+         for (String key : state_arcs_map_1.keySet()) {
+           ArrayList<Arc>l = state_arcs_map_1.get(key);
+           for (Arc a : l) {
+             a.drawArc();
+           }
+         }
+         // state arcs
+         for (Arc a : state_arcs_1) {
            a.drawArc();
          }
+         // inner
+         ellipse(center_x, center_y, inner_r*2, inner_r*2);
+       } else if (state_arcs_map_1.containsKey(to_draw)) {
+         // Draw the state graph (2 layers) 
+         updateArcsHighlight_2(candidates);
+         ArrayList<Arc>l = state_arcs_map_2.get(to_draw);
+         for (Arc a : l) {
+           a.drawArc();
+         } 
+         // inner
+         ellipse(center_x, center_y, middle_r*2, middle_r*2);
+       } else {
+         // TODO: candidate
        }
-       // state arcs
-       for (Arc a : state_arcs_1) {
-         a.drawArc();
-       }
-       // inner
-       ellipse(center_x, center_y, inner_r*2, inner_r*2);
        
        
-       //// Draw the state graph (2 layers) 
-       //updateArcsHighlight_2(candidates);
-       //ArrayList<Arc>l = state_arcs_map_2.get("NY");
-       //for (Arc a : l) {
-       //  a.drawArc();
-       //}
-       
-       //// inner
-       //ellipse(center_x, center_y, inner_r*2, inner_r*2);
        
   }
   
@@ -197,21 +213,6 @@ class Sunburst{
        }  
     }
   }
-  
- 
-  
-  //ArrayList<String> getStates(ArrayList<Candidate>candidates){
-  //  ArrayList<String> allstates = new ArrayList<String>();
-  //  Set<String> uniquestates;
-  //  for (Candidate c : candidates){
-  //      allstates.add(c.State);
-  //  }
-  //  uniquestates = new HashSet<String>(allstates);
-  //  allstates.clear();
-  //  allstates.addAll(uniquestates);
-  //  printArray(allstates);
-  //  return allstates;
-  //}
 }
 
 float getFundSum(ArrayList<Candidate>candidates) {

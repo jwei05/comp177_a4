@@ -43,8 +43,12 @@ class Arc{
     if (sq(mouseX - cent_x) + sq(mouseY - cent_y) <= sq(inner_d/2)) {
       return false;
     }
+    
+    //println("start ", start, " curr_angle: ", curr_angle, " end: ", end);
+    
+
    
-   if (sq(mouseX - cent_x) + sq(mouseY - cent_y) <= sq(diameter/2) && (start < curr_angle && end > curr_angle)) {
+    if (sq(mouseX - cent_x) + sq(mouseY - cent_y) <= sq(diameter/2) && (start < curr_angle && end > curr_angle)) {
        if (clicked){
          model.updateVisible(name, is_state);
          clicked = false;

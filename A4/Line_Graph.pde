@@ -110,7 +110,6 @@ class Line_Graph {
                c = color(255, 255, 102); 
          } 
          
-         
          for (Point p : l_pts) {
            if (p.onPoint()) {
                c = color(255, 255, 102); 

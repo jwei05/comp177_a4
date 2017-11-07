@@ -121,8 +121,10 @@ class Model {
   void updateVisible(String name, boolean is_state){
     //if state, then two layers
     if(is_state){
-        Visible_candidates = FilterbyState(name);
-    } 
+        to_draw = name;
+    } else {
+        to_draw = name;
+    }
   }
   
   ArrayList<Candidate>FilterbyParty(String party) {
