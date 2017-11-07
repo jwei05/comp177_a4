@@ -42,10 +42,6 @@ class Arc{
       return false;
     }
     
-    //println("start ", start, " curr_angle: ", curr_angle, " end: ", end);
-    
-
-   
     if (sq(mouseX - cent_x) + sq(mouseY - cent_y) <= sq(diameter/2) && (start < curr_angle && end > curr_angle)) {
        if (clicked){
          model.updateVisible(name, is_state);
@@ -54,7 +50,7 @@ class Arc{
        return true;
     } else {
       return false; 
-      }
+    }
   }
   
   void updateModelHighlight() {
@@ -66,7 +62,6 @@ class Arc{
     }
   }
 }
-
 
 void mouseClicked(){
     clicked = true;

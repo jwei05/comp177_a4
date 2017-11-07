@@ -11,8 +11,8 @@ void setup () {
   background(115, 119, 140);
   model = new Model();
   to_draw = "all";
-
   
+  //intialize all the graphs
   temporal_g = new Line_Graph(model.ElectionCandidates, model.months, 0, 0, 0.6 * width, 0.5 * height);
   sunburst_g = new Sunburst(model.ElectionCandidates, 0, 0.5 * height, 0.6 * width, 0.5 * height);
   alluvial_g = new Alluvial(model.ElectionCandidates,0.6 *width, 0, 0.4*width, height);
@@ -33,6 +33,7 @@ void draw () {
   model.reset();
 }
 
+//if press z, zoomout
 void keyPressed(){
   if(key == 'z'){
     //zoomout

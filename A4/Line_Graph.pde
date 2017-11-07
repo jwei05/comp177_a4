@@ -81,13 +81,15 @@ class Line_Graph {
          for(int i = 0; i < c.Funds.size(); i++){           
             curr_x = x_margin + (i+1) * x_unit_len;
             curr_y = (c.Funds.get(i)) * y_unit_len ; 
-            Point p = new Point(curr_x, canvas_height - y_margin - curr_y, c.Funds.get(i), c.Name);
+            Point p = new Point(curr_x, canvas_height - y_margin - curr_y,
+                                                   c.Funds.get(i), c.Name);
             cand_fund.add(p);
          }
          cand_points.put(c.Name, cand_fund);
       }
     }
     
+    //updates changes in model
     void report_hover_to_model() {
       if (to_draw == "all") {
         for(String key : cand_points.keySet()){
@@ -119,10 +121,8 @@ class Line_Graph {
              }
            }  
         }
-      }
-      
+      }  
     }
-    
     
     void drawData(ArrayList<Candidate>candidates){
       updatePoints(candidates);
@@ -140,8 +140,7 @@ class Line_Graph {
              if (p.onPoint()) {
                  c = color(255, 255, 102); 
              }
-           } 
-           
+           }
            // draw lines
            for(int i = 0; i < l_pts.size(); i++){
               Point p = l_pts.get(i); 
@@ -161,15 +160,14 @@ class Line_Graph {
         if (l_pts.get(0).highlight) {
                c = color(255, 255, 102); 
          } 
-         
         for (Point p : l_pts) {
            if (p.onPoint()) {
                c = color(255, 255, 102); 
            }
-         } 
+        } 
          
-         // draw lines
-         for(int i = 0; i < l_pts.size(); i++){
+        // draw lines
+        for(int i = 0; i < l_pts.size(); i++){
             Point p = l_pts.get(i); 
             if(i != 0) {
                float prev_x = l_pts.get(i-1).x;

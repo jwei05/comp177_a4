@@ -22,7 +22,6 @@ class Alluvial {
   }
   
   void initGraph(ArrayList<Candidate>candidates){
-    
     // initialize the candidates' circles
     float ratio_sum = 0;
     float spacing_total = canvas_h/5;
@@ -63,16 +62,8 @@ class Alluvial {
       
       accum_y += y_margin + curr_r + curr_r; 
     }
-
     
     // initialize the party circles
-    float democrat_sum = getFundSum(party_map.get("Democrat"));
-    float rep_sum = getFundSum(party_map.get("Republican"));
-    float other_sum = getFundSum(party_map.get("Other"));
-    
-    float Rep_to_Dem = sqrt(rep_sum/ democrat_sum);
-    float Other_to_Dem = sqrt(other_sum/ democrat_sum);
-    
     spacing_total = canvas_h/3;
     y_margin = spacing_total/3;
     content_total = 2*canvas_h/3;
@@ -93,7 +84,7 @@ class Alluvial {
     party_circles.add(other);
    }
    
-   
+  //updates changes to model 
   void report_hover_to_model() {
     for (Circle c: party_circles) {
       String p = c.name;
@@ -127,12 +118,11 @@ class Alluvial {
         //resets stroke weight
         strokeWeight(1);
       }
-        // draw the party
+      // draw the party
       for (Circle c : party_circles) {
         fill(255);
         c.drawCircle();
       }
-      
       // draw the candidates
       for (Circle c : candidates_circles) {
         c.drawCircle();
@@ -197,11 +187,11 @@ class Alluvial {
               strokeWeight(1);  
             }
           }
-        }  
-        
+        }   
       }
   }
   
+  //find candidate's state
   ArrayList<String> findstate(ArrayList<Candidate>cands_instate){
      Set<String> h = new HashSet<String>();
      for(Candidate c : cands_instate){
@@ -227,32 +217,18 @@ class Alluvial {
   void update_circle(ArrayList<Candidate>candidates){
     for( Candidate c : candidates ){
        if(c.highlight){
-         //println(c.Name);
          cc_map.get(c.Name).highlight = true;
        }
     }
   }
   
-  //resets all the highlightin in party and candidate circles
+  //resets all the highlighting in party and candidate circles
   void reset(){
     for(Circle c : party_circles) {
        c.highlight = false; 
     }
-    
     for(Circle c : candidates_circles) {
        c.highlight = false; 
     }
   }
-}
-  
- 
-
-float find_max(ArrayList<Float>l) {
-  float m = 0;
-  for (Float num : l) {
-    if (num > m) {
-      m = num;
-    }
-  }
-  return m;
 }

@@ -6,6 +6,7 @@ class Circle {
   float Funding;
   boolean highlight; // not on yourself
   boolean is_party;
+  
   public Circle(String Name, float X, float Y, float D, float fund, boolean Is_party){
      name = Name;
      x = X;
@@ -19,7 +20,6 @@ class Circle {
   void drawCircle() {
     if (onCircle() || highlight) {
        fill(242, 202, 205);
-       //println(this.name);
        ellipse(x, y, diameter, diameter); 
     } else {
       fill(255);
@@ -34,7 +34,6 @@ class Circle {
     return false;
   }
   
-  
   void updateModel() {
     if (is_party) {
        model.Update("party", name);
@@ -42,6 +41,5 @@ class Circle {
     else {
        model.Update("candidate", name);
     }
-  }
-  
+  }  
 }

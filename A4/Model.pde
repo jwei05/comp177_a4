@@ -1,15 +1,14 @@
 class Model {
   ArrayList<Candidate> ElectionCandidates = new ArrayList<Candidate>();  // data
-  ArrayList<Candidate> Visible_candidates;//= new ArrayList<Candidate>(); 
+  ArrayList<Candidate> Visible_candidates; 
   ArrayList<Candidate> Highlight_candidates = new ArrayList<Candidate>(); 
   ArrayList<String> months = new ArrayList<String>();
   
   float minfund;
-  
   float all_candidates_sum;
+  
   Map<String, ArrayList<Candidate>> state_map = new HashMap<String, ArrayList<Candidate>>();
-  
-  
+
   Model() {
      parseData();
      Visible_candidates = (ArrayList<Candidate>)ElectionCandidates.clone();
@@ -50,7 +49,6 @@ class Model {
          }
       }
     }
-
   }
   
   float find_min_fund() {
@@ -62,6 +60,7 @@ class Model {
     }
     return min;
   }
+  
   //read in data
   void parseData() {
     String[] lines = loadStrings("./data.csv");
@@ -84,16 +83,8 @@ class Model {
       Candidate c = new Candidate(name, state, party, funds);
       ElectionCandidates.add(c);
     }
-  
-  //for (Candidate c : ElectionCandidates ) {
-  //  println("name: ", c.Name);
-  //  println("state: ", c.State);
-  //  println("party: ", c.Party);
-  //  printArray(c.Funds);
-  //}
   }
-  
-  
+
   void createStateMap(ArrayList<Candidate>candidates) {
     for (Candidate c : candidates) {
       if (state_map.get(c.State) == null) {
@@ -111,7 +102,6 @@ class Model {
   ArrayList<Candidate> FilterbyState(String state) {
     ArrayList<Candidate> result = new ArrayList<Candidate>();
     for (Candidate c : Visible_candidates) {
-      //println("state "+ "--" +c.State + "--"+state+"--");
       if (Objects.equals(c.State, state)) {
         result.add(c);
       }
@@ -156,4 +146,14 @@ class Model {
      }
      return false;
   }
+}
+
+float find_max(ArrayList<Float>l) {
+  float m = 0;
+  for (Float num : l) {
+    if (num > m) {
+      m = num;
+    }
+  }
+  return m;
 }
