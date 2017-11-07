@@ -26,6 +26,7 @@ class Model {
      alluvial_g.reset();
      sunburst_g.reset_1();
      sunburst_g.reset_2();
+     sunburst_g.reset_3();
      temporal_g.reset();
   }
   

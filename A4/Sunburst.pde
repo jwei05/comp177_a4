@@ -9,15 +9,17 @@ class Sunburst{
   float center_x;
   float center_y;
   
-  // the complete one (3 layers)
+  // the complete one 
   Map<String, ArrayList<Arc>> state_arcs_map_1 = new HashMap<String, ArrayList<Arc>>();
   ArrayList<Arc> state_arcs_1 = new ArrayList<Arc>();
   Map<Candidate, ArrayList<Arc>> cand_arcs_map_1 = new HashMap<Candidate, ArrayList<Arc>>();
   
-  // the state one (2 layers)
+  // the state one 
   Map<String, ArrayList<Arc>> state_arcs_map_2 = new HashMap<String, ArrayList<Arc>>();
-  //ArrayList<Arc> state_arcs_2 = new ArrayList<Arc>();   // all 2Pie s
   Map<Candidate, ArrayList<Arc>> cand_arcs_map_2 = new HashMap<Candidate, ArrayList<Arc>>();
+  
+  // the candidate
+  Map<String, Arc> cand_arc_map_3 = new HashMap<String, Arc>();
   
   
   public Sunburst(ArrayList<Candidate>candidates, float c_x, float c_y, float c_w, float c_h){
@@ -33,6 +35,7 @@ class Sunburst{
     
     initSunburst_1(candidates); 
     initSunburst_2(candidates);
+    initSunburst_3(candidates);
   }
   
   void initSunburst_1(ArrayList<Candidate>candidates){
@@ -99,6 +102,13 @@ class Sunburst{
     }
   }
   
+  void initSunburst_3 (ArrayList<Candidate>candidates){
+    for (Candidate c : candidates) {
+      Arc a = new Arc(c.Name, 255, center_x, center_y, 0, 2*PI, outer_r *2, 0, 2*PI, false);
+      cand_arc_map_3.put(c.Name, a);
+    }
+  }
+  
   void report_hover_to_model(String to_draw) {   
     if (to_draw == "all") {
       // candidates arcs
@@ -125,8 +135,11 @@ class Sunburst{
          }
        }
     } else {
-      // TODO: the candidate
-      
+      Arc a = cand_arc_map_3.get(to_draw);
+      println(to_draw);
+      if (a.onArc()) {
+        a.updateModelHighlight();
+      }
     }
     
   }
@@ -158,10 +171,10 @@ class Sunburst{
          // inner
          ellipse(center_x, center_y, middle_r*2, middle_r*2);
        } else {
-         // TODO: candidate
-       }
-       
-       
+         updateArcsHighlight_3(candidates);
+         Arc a = cand_arc_map_3.get(to_draw);
+         a.drawArc();
+       }   
        
   }
   
@@ -184,6 +197,15 @@ class Sunburst{
          for (Arc a : l) {
            a.highlight = true;
          }
+       }
+    }
+  }
+  
+  void updateArcsHighlight_3(ArrayList<Candidate>candidates) {
+    for( Candidate c : candidates ){
+       if(c.highlight){
+         Arc a = cand_arc_map_3.get(c.Name);
+         a.highlight = true;
        }
     }
   }
@@ -211,6 +233,12 @@ class Sunburst{
        for(Arc c : all_arcs){
          c.highlight = false; 
        }  
+    }
+  }
+  
+  void reset_3() {
+    for (String key : cand_arc_map_3.keySet()) {
+      cand_arc_map_3.get(key).highlight = false;
     }
   }
 }

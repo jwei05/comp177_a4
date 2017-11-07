@@ -8,7 +8,7 @@ String to_draw;
 
 void setup () {
   size(1200, 700);
-  background(255);
+  background(92, 95, 112);
   model = new Model();
   to_draw = "all";
 

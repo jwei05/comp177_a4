@@ -26,9 +26,9 @@ class Line_Graph {
      
      max = getMaxfund(candidates);
      initData(candidates, fund_months);
-     //drawaxisandidates,fund_months);
-     //drawData(candid 
   }
+  
+  
   void drawGraph(ArrayList<Candidate> candidates, ArrayList<String>fund_months) {
      drawaxis(fund_months);
      drawData(candidates);
