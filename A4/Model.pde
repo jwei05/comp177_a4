@@ -137,4 +137,23 @@ class Model {
     }
     return result;
   }  
+  
+  //find candidate by name
+  Candidate find_candidate(String name){   
+     for ( Candidate c : ElectionCandidates){
+        if (c.Name == name){
+           return c;
+        }
+     }
+     return null;
+  }
+  
+  boolean is_candidate(String name){
+     for (Candidate c : ElectionCandidates){
+        if (c.Name == name){
+           return true; 
+        } 
+     }
+     return false;
+  }
 }

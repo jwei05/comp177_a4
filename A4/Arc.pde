@@ -29,9 +29,6 @@ class Arc{
       fill(131, 198, 205);
       arc(cent_x, cent_y, diameter, diameter, start, end, PIE); 
       fill(255);
-      //if (onArc()) {
-      //  updateModelHighlight();
-      //}
     }
   }
   

@@ -7,7 +7,7 @@ class Alluvial {
   ArrayList<Circle>party_circles = new ArrayList<Circle>();
   ArrayList<Circle>candidates_circles = new ArrayList<Circle>();
   
-  Map<Candidate, Circle> cc_map = new HashMap<Candidate, Circle>();
+  Map<String, Circle> cc_map = new HashMap<String, Circle>();
   Map<String, ArrayList<Candidate>> party_map = new HashMap<String, ArrayList<Candidate>>();
   Map<String, ArrayList<Circle>>party_pos_map = new HashMap<String, ArrayList<Circle>>();
   
@@ -58,7 +58,7 @@ class Alluvial {
                             accum_y + y_margin + curr_r, curr_r*2, candidates.get(i).TotalFund, false);
       
       candidates_circles.add(c);
-      cc_map.put(candidates.get(i), c);
+      cc_map.put(candidates.get(i).Name, c);
       party_pos_map.get(candidates.get(i).Party).add(c);
       
       accum_y += y_margin + curr_r + curr_r; 
@@ -109,35 +109,105 @@ class Alluvial {
   void drawGraph(ArrayList<Candidate>candidates){
     //draw the streams
     update_circle(candidates);
-    for (Circle c : party_circles) {
-      float party_x = c.x;
-      float party_y = c.y;
-      String p = c.name;
-      ArrayList<Circle> l = party_pos_map.get(p);
-      for (Circle circle : l) {
-        float candi_x = circle.x;
-        float candi_y = circle.y;
-        noFill();
-        //calculate stroke weight, dependent on amount of fund
-        float stroke = (circle.Funding/model.minfund)/20;
-        strokeWeight(stroke);
-        bezier(party_x, party_y, candi_x-150, party_y, party_x+150, candi_y, candi_x, candi_y);
+    if (to_draw == "all") {
+      for (Circle c : party_circles) {
+        float party_x = c.x;
+        float party_y = c.y;
+        String p = c.name;
+        ArrayList<Circle> l = party_pos_map.get(p);
+        for (Circle circle : l) {
+          float candi_x = circle.x;
+          float candi_y = circle.y;
+          noFill();
+          //calculate stroke weight, dependent on amount of fund
+          float stroke = (circle.Funding/model.minfund)/20;
+          strokeWeight(stroke);
+          bezier(party_x, party_y, candi_x-150, party_y, party_x+150, candi_y, candi_x, candi_y);
+        }
+        //resets stroke weight
+        strokeWeight(1);
       }
-      //resets stroke weight
-      strokeWeight(1);
-    }
-
-    // draw the party
-    for (Circle c : party_circles) {
-      fill(255);
-      c.drawCircle();
-    }
-    
-    // draw the candidates
-    for (Circle c : candidates_circles) {
-      c.drawCircle();
-    }
- 
+        // draw the party
+      for (Circle c : party_circles) {
+        fill(255);
+        c.drawCircle();
+      }
+      
+      // draw the candidates
+      for (Circle c : candidates_circles) {
+        c.drawCircle();
+      }
+    } //candidate
+      else if (cc_map.containsKey(to_draw)){
+        Circle Cand_c = cc_map.get(to_draw);
+        Candidate cand = model.find_candidate(Cand_c.name);
+        
+        for(Circle pc : party_circles){
+          //println(pc.name, "   ", cand.Party);
+          if(Objects.equals(pc.name,cand.Party)){
+            float party_x = pc.x;
+            float party_y = pc.y;
+            String p = pc.name;
+            ArrayList<Circle> l = party_pos_map.get(p);
+            for(Circle circle : l){
+              if(Objects.equals(circle.name, to_draw)){
+                float candi_x = circle.x;
+                float candi_y = circle.y;
+                noFill();
+                //calculate stroke weight, dependent on amount of fund
+                float stroke = (circle.Funding/model.minfund)/20;
+                strokeWeight(stroke);
+                bezier(party_x, party_y, candi_x-150, party_y, party_x+150, candi_y, candi_x, candi_y);
+                strokeWeight(1);
+                pc.drawCircle();
+                circle.drawCircle();
+              }
+              //resets stroke weight
+              strokeWeight(1);  
+            }
+          }
+        }   
+      }//state
+      else {
+        ArrayList<Candidate> cands_instate = model.FilterbyState(to_draw);
+        ArrayList<String> all_parties = findstate(cands_instate);
+        
+        for(Circle pc : party_circles){
+          //println(pc.name, "   ", cand.Party);
+          if(all_parties.contains(pc.name)){
+            float party_x = pc.x;
+            float party_y = pc.y;
+            String p = pc.name;
+            ArrayList<Circle> l = party_pos_map.get(p);
+            for(Circle circle : l){
+              String state = model.find_candidate(circle.name).State;
+              if(Objects.equals(state, to_draw)){
+                float candi_x = circle.x;
+                float candi_y = circle.y;
+                noFill();
+                //calculate stroke weight, dependent on amount of fund
+                float stroke = (circle.Funding/model.minfund)/20;
+                strokeWeight(stroke);
+                bezier(party_x, party_y, candi_x-150, party_y, party_x+150, candi_y, candi_x, candi_y);
+                strokeWeight(1);
+                pc.drawCircle();
+                circle.drawCircle();
+              }
+              //resets stroke weight
+              strokeWeight(1);  
+            }
+          }
+        }  
+        
+      }
+  }
+  
+  ArrayList<String> findstate(ArrayList<Candidate>cands_instate){
+     Set<String> h = new HashSet<String>();
+     for(Candidate c : cands_instate){
+        h.add(c.Party); 
+     }
+     return new ArrayList<String>(h);
   }
   
   void createPartyMap(ArrayList<Candidate>candidates){
@@ -152,18 +222,13 @@ class Alluvial {
         party_map.put(c.Party, l);
       }
     }
-    //for ( String key : party_map.keySet()) {
-    //    ArrayList<Candidate>l = party_map.get(key);
-    //    print(key); 
-    //    printArray(l);
-    //}
   }
   
   void update_circle(ArrayList<Candidate>candidates){
     for( Candidate c : candidates ){
        if(c.highlight){
          //println(c.Name);
-         cc_map.get(c).highlight = true;
+         cc_map.get(c.Name).highlight = true;
        }
     }
   }
@@ -178,9 +243,9 @@ class Alluvial {
        c.highlight = false; 
     }
   }
+}
   
-
- }
+ 
 
 float find_max(ArrayList<Float>l) {
   float m = 0;

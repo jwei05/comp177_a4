@@ -136,7 +136,6 @@ class Sunburst{
        }
     } else {
       Arc a = cand_arc_map_3.get(to_draw);
-      println(to_draw);
       if (a.onArc()) {
         a.updateModelHighlight();
       }
