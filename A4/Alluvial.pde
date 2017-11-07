@@ -112,8 +112,10 @@ class Alluvial {
           noFill();
           //calculate stroke weight, dependent on amount of fund
           float stroke = (circle.Funding/model.minfund)/20;
+          stroke(c.c);
           strokeWeight(stroke);
           bezier(party_x, party_y, candi_x-150, party_y, party_x+150, candi_y, candi_x, candi_y);
+          stroke(0);
         }
         //resets stroke weight
         strokeWeight(1);
@@ -133,7 +135,6 @@ class Alluvial {
         Candidate cand = model.find_candidate(Cand_c.name);
         
         for(Circle pc : party_circles){
-          //println(pc.name, "   ", cand.Party);
           if(Objects.equals(pc.name,cand.Party)){
             float party_x = pc.x;
             float party_y = pc.y;

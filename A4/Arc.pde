@@ -29,6 +29,10 @@ class Arc{
       fill(131, 198, 205);
       arc(cent_x, cent_y, diameter, diameter, start, end, PIE); 
       fill(255);
+      
+      if(onArc()){
+        toolkit(); 
+      }
     }
   }
   
@@ -43,7 +47,7 @@ class Arc{
     }
     
     if (sq(mouseX - cent_x) + sq(mouseY - cent_y) <= sq(diameter/2) && (start < curr_angle && end > curr_angle)) {
-       if (clicked){
+      if (clicked){
          model.updateVisible(name, is_state);
          clicked = false;
        }
@@ -61,6 +65,13 @@ class Arc{
        model.Update("candidate", name);
     }
   }
+  
+  void toolkit(){
+     fill(255);
+     textSize(20);
+     text(this.name, 20, 650); 
+  }
+
 }
 
 void mouseClicked(){

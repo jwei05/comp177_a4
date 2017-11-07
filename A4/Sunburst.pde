@@ -27,7 +27,7 @@ class Sunburst{
     canvas_y = c_y;
     canvas_width = c_w;
     canvas_height = c_h;
-    center_x = canvas_width/2;
+    center_x = canvas_width/2 + 50;
     center_y = canvas_height/2 + canvas_height;
     outer_r = (canvas_height -  20) / 2;
     middle_r = outer_r - 50;

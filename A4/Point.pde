@@ -17,6 +17,9 @@ class Point{
     if (onPoint() || highlight) {
       fill(255, 255, 102);
       ellipse(x, y, diameter, diameter);
+      if(onPoint()){
+        toolkit(); 
+      }
     } else {
       fill(0);
       ellipse(x, y, diameter, diameter);
@@ -33,5 +36,13 @@ class Point{
   
   void updateModel() {
     model.Update("candidate", name);
+  }
+  
+  void toolkit(){
+     fill(255);
+     textSize(20);
+     String s = this.name + System.lineSeparator() +
+                this.fund/1000000 + " m";
+     text(s, 20, 650); 
   }
 }
